@@ -1,5 +1,5 @@
 {
-  "name": "battlemetrics-js",
+  "name": "battlemetrics-client",
   "version": "0.1.0",
   "description": "TypeScript client library for the BattleMetrics API",
   "keywords": [
@@ -9,18 +9,24 @@
     "typescript",
     "gaming"
   ],
-  "homepage": "https://github.com/hizenxyz/battlemetrics-js#readme",
+  "homepage": "https://github.com/hizenxyz/battlemetrics-client#readme",
   "bugs": {
-    "url": "https://github.com/hizenxyz/battlemetrics-js/issues"
+    "url": "https://github.com/hizenxyz/battlemetrics-client/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hizenxyz/battlemetrics-js.git"
+    "url": "git+https://github.com/hizenxyz/battlemetrics-client.git"
   },
   "license": "MIT",
   "author": "hizenxyz",
   "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
