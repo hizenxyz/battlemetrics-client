@@ -11,6 +11,8 @@ pre-commit:
       stage_fixed: true
     typecheck:
       run: npx tsc --noEmit
+    test:
+      run: npm test
 
 commit-msg:
   commands:
