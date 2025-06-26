@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -38,6 +40,3 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
-          body: |
-            Changes in this release:
-            - Auto-generated release from tag ${{ github.ref }}
