@@ -1,22 +1,18 @@
-export class BattleMetricsClient {
-  private apiKey: string;
-  private baseUrl: string;
+import axios from "axios";
 
-  constructor(
-    apiKey: string,
-    baseUrl: string = "https://api.battlemetrics.com"
-  ) {
-    this.apiKey = apiKey;
-    this.baseUrl = baseUrl;
+export function getClient() {
+  const apiKey = process.env.BATTLEMETRICS_TOKEN;
+  const baseUrl =
+    process.env.BATTLEMETRICS_URL || "https://api.battlemetrics.com";
 
-    console.log("BattleMetrics client initialized");
+  if (!apiKey) {
+    throw new Error("BATTLEMETRICS_TOKEN is not set in environment variables");
   }
 
-  getApiKey(): string {
-    return this.apiKey;
-  }
-
-  getBaseUrl(): string {
-    return this.baseUrl;
-  }
+  return axios.create({
+    baseURL: baseUrl,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
 }

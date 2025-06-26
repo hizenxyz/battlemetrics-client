@@ -1,42 +1,44 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { BattleMetricsClient } from "../../src/client";
 
-describe("BattleMetricsClient", () => {
-  let consoleSpy: ReturnType<typeof vi.spyOn>;
-
+describe("getClient", () => {
   beforeEach(() => {
-    // Spy on console.log to verify it's called during initialization
-    consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    vi.resetModules();
+    process.env.BATTLEMETRICS_TOKEN = "test-token";
+    process.env.BATTLEMETRICS_URL = "https://custom-api.example.com";
   });
 
-  it("should initialize with valid API key", () => {
-    expect(() => {
-      new BattleMetricsClient("valid-api-key");
-    }).not.toThrow();
+  it("should create an Axios instance with the correct baseURL and headers", async () => {
+    const { getClient } = await import("../../src/client");
+    const client = getClient();
+
+    expect(client.defaults.baseURL).toBe("https://custom-api.example.com");
+    expect(client.defaults.headers["Authorization"]).toBe("Bearer test-token");
   });
 
-  it("should log initialization message when created", () => {
-    new BattleMetricsClient("valid-api-key");
+  it("should default to https://api.battlemetrics.com if no BATTLEMETRICS_URL is set", async () => {
+    delete process.env.BATTLEMETRICS_URL;
+    const { getClient } = await import("../../src/client");
+    const client = getClient();
 
-    expect(consoleSpy).toHaveBeenCalledWith("BattleMetrics client initialized");
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(client.defaults.baseURL).toBe("https://api.battlemetrics.com");
   });
 
-  it("should create multiple instances without conflicts", () => {
-    const client1 = new BattleMetricsClient("valid-api-key-1");
-    const client2 = new BattleMetricsClient("valid-api-key-2");
+  it("should throw an error if BATTLEMETRICS_TOKEN is not set", async () => {
+    delete process.env.BATTLEMETRICS_TOKEN;
+    const { getClient } = await import("../../src/client");
 
-    expect(client1).toBeInstanceOf(BattleMetricsClient);
-    expect(client2).toBeInstanceOf(BattleMetricsClient);
+    expect(() => getClient()).toThrow(
+      "BATTLEMETRICS_TOKEN is not set in environment variables"
+    );
+  });
+
+  it("should create independent Axios instances", async () => {
+    const { getClient } = await import("../../src/client");
+    const client1 = getClient();
+    const client2 = getClient();
+
     expect(client1).not.toBe(client2);
-  });
-
-  it("should return API key and base URL", () => {
-    const apiKey = "test-api-key";
-    const baseUrl = "https://custom-api.example.com";
-    const client = new BattleMetricsClient(apiKey, baseUrl);
-
-    expect(client.getApiKey()).toBe(apiKey);
-    expect(client.getBaseUrl()).toBe(baseUrl);
+    expect(typeof client1.get).toBe("function");
+    expect(typeof client2.get).toBe("function");
   });
 });
