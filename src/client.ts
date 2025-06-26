@@ -4,7 +4,7 @@ export class BattleMetricsClient {
 
   constructor(
     apiKey: string,
-    baseUrl: string = "https://api.battlemetrics.com",
+    baseUrl: string = "https://api.battlemetrics.com"
   ) {
     this.apiKey = apiKey;
     this.baseUrl = baseUrl;
