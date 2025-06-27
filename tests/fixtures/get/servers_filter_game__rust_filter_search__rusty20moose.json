@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "type": "server",
+      "id": "4729828",
+      "attributes": {
+        "id": "4729828",
+        "name": "Rusty Moose |EU Main|",
+        "address": "main.eu.moose.gg",
+        "ip": "205.178.168.176",
+        "port": 28010,
+        "players": 244,
+        "maxPlayers": 275,
+        "rank": 85,
+        "location": [-0.1278, 51.5081],
+        "status": "online",
+        "details": {
+          "tags": ["mp300", "EU"],
+          "official": true,
+          "rust_type": "official",
+          "rust_gamemode": "rust",
+          "rust_world_size": 4500,
+          "rust_maps": {
+            "seed": 1337,
+            "size": 4500,
+            "url": "https://rustmaps.com/map/55e8f8ebe3c94b0aadb8db46a3e9025d",
+            "monumentCount": 231,
+            "barren": false
+          }
+        },
+        "private": false,
+        "createdAt": "2019-11-07T19:39:44.018Z",
+        "updatedAt": "2025-06-27T02:10:20.824Z",
+        "portQuery": 28015,
+        "country": "GB",
+        "queryStatus": "timeout"
+      },
+      "relationships": {
+        "game": {
+          "data": {
+            "type": "game",
+            "id": "rust"
+          }
+        }
+      }
+    }
+  ],
+  "included": []
+}

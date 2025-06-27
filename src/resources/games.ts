@@ -1,5 +1,5 @@
 import { getClient } from "../client";
-import { flattenParams } from "../utils/flattenParams";
+import { buildQueryString } from "../utils/buildQueryString";
 import { GameListParams } from "../types/gamesParams";
 import { GameListResponse, GameResponse } from "../types/reponses";
 
@@ -7,10 +7,9 @@ export async function getGameList(
   params?: GameListParams
 ): Promise<GameListResponse> {
   const client = getClient();
-  const flat = params ? flattenParams(params) : undefined;
-  const res = await client.get("/games", {
-    params: flat,
-  });
+  const queryString = params ? buildQueryString(params) : "";
+  const url = queryString ? `/games?${queryString}` : "/games";
+  const res = await client.get(url);
   return res.data;
 }
 

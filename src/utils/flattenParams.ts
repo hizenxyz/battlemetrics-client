@@ -6,7 +6,15 @@ export function flattenParams(
 
   if (obj && typeof obj === "object" && !Array.isArray(obj)) {
     for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-      const newKey = prefix ? `${prefix}[${key}]` : key;
+      let newKey: string;
+
+      // Handle colon syntax (e.g., "filter:game" -> "filter[game]")
+      if (key.includes(":") && !prefix) {
+        const [baseKey, subKey] = key.split(":", 2);
+        newKey = `${baseKey}[${subKey}]`;
+      } else {
+        newKey = prefix ? `${prefix}[${key}]` : key;
+      }
 
       if (
         value !== null &&

@@ -1,40 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
-// Mock the client module globally
-vi.mock("../../../src/client", () => ({
-  getClient: vi.fn(),
-}));
+import { describe, it, expect } from "vitest";
+import "../../setup";
 
 import { getGameList, getGameInfo } from "../../../src/resources/games";
-import { getClient } from "../../../src/client";
-import { AxiosInstance } from "axios";
-import path from "path";
-import fs from "fs";
-
-// Helper to load fixtures
-function loadFixture(fixturePath: string) {
-  const fullPath = path.join(__dirname, "../../fixtures", fixturePath);
-  if (fs.existsSync(fullPath)) {
-    return JSON.parse(fs.readFileSync(fullPath, "utf-8"));
-  }
-  throw new Error(`Fixture not found: ${fixturePath}`);
-}
-
-const mockGetClient = vi.mocked(getClient);
-
-const mockClient = {
-  get: vi.fn().mockImplementation((url: string) => {
-    // Convert URL to fixture path: /games -> get/games.json
-    const fixturePath = `get${url.replace(/\//g, "/")}.json`;
-    const fixtureData = loadFixture(fixturePath);
-    return Promise.resolve({ data: fixtureData });
-  }),
-} as unknown as AxiosInstance;
-
-beforeEach(() => {
-  vi.clearAllMocks();
-  mockGetClient.mockReturnValue(mockClient);
-});
 
 describe("Games API", () => {
   describe("getGameList", () => {

@@ -18,7 +18,7 @@ export interface Game {
    * Resource type. Always "game".
    * Example: "game"
    */
-  type: ResourceType;
+  type: ResourceType.Game;
 
   /**
    * Game attributes.
