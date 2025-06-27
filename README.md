@@ -9,7 +9,9 @@ TypeScript client library for the [BattleMetrics API](https://www.battlemetrics.
 
 BattleMetrics provides game server monitoring, player tracking, and admin tools for popular games like Rust, Ark, CS2, and more.
 
-⚠️ **Note**: This project is still in active development and is not ready for production use yet.
+⚠️ **Note**: This is a partial implementation focused on specific BattleMetrics API endpoints. If you need additional endpoints that aren't currently supported, please [open an issue](https://github.com/hizenxyz/battlemetrics-client/issues) or submit a pull request!
+
+The project is designed to be easily extensible, and I'm happy to help guide contributions for new features. Feel free to reach out if you'd like to add support for specific endpoints.
 
 ## Installation
 
@@ -71,6 +73,16 @@ npm run lint
 # Build project
 npm run build
 ```
+
+## Contributing
+
+This project welcomes contributions! If you'd like to add support for additional BattleMetrics API endpoints or improve existing functionality, please:
+
+1. Check the [existing issues](https://github.com/hizenxyz/battlemetrics-client/issues) to see if your feature is already being worked on
+2. Open an issue to discuss the proposed changes
+3. Submit a pull request with your implementation
+
+I'm happy to help guide you through the contribution process and provide assistance with implementation details.
 
 ## Support
 
