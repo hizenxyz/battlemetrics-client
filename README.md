@@ -17,15 +17,29 @@ BattleMetrics provides game server monitoring, player tracking, and admin tools 
 npm install battlemetrics-client
 ```
 
-## Usage
+## Quick Start
+
+Set your BattleMetrics API token as an environment variable:
+
+```bash
+export BATTLEMETRICS_TOKEN="your-api-token-here"
+```
+
+Basic usage:
 
 ```typescript
-import { BattleMetricsClient } from "battlemetrics-client";
+import { getGameList, getGameInfo } from "battlemetrics-client";
 
-const client = new BattleMetricsClient("your-api-token");
+// Get all games
+const games = await getGameList();
 
-// TODO; describe usage
+// Get specific game info
+const arkInfo = await getGameInfo("ark");
 ```
+
+## Documentation
+
+📖 **[Full Usage Guide](USAGE.md)** - Comprehensive examples and API reference for all implemented resources.
 
 ## API Reference
 
