@@ -23,7 +23,7 @@ export function createMockClient() {
       try {
         const fixtureData = loadFixture(fixturePath);
         return Promise.resolve({ data: fixtureData });
-      } catch (error) {
+      } catch {
         return Promise.reject(new Error(`No fixture found for ${url}`));
       }
     }),

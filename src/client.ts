@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
-export function getClient() {
+export function getClient(): AxiosInstance {
   const apiKey = process.env.BATTLEMETRICS_TOKEN;
   const baseUrl =
     process.env.BATTLEMETRICS_URL || "https://api.battlemetrics.com";

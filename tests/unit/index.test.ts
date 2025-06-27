@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { version, ValidationError, AuthenticationError } from "../../src/index";
+import { version } from "../../src/index";
 import pkg from "../../package.json";
 
 describe("Index exports", () => {
