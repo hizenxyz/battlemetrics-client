@@ -1,7 +1,7 @@
 import { getClient } from "../client";
 import { buildQueryString } from "../utils/buildQueryString";
 import { GameListParams } from "../types/gamesParams";
-import { GameListResponse, GameResponse } from "../types/reponses";
+import { GameListResponse, GameResponse } from "../types/responses";
 
 export async function getGameList(
   params?: GameListParams

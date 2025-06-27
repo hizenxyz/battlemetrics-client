@@ -2,7 +2,7 @@
 import { getClient } from "../client";
 import { buildQueryString } from "../utils/buildQueryString";
 import { ServerListParams } from "../types/serversParams";
-import { ServerListResponse, ServerResponse } from "../types/reponses";
+import { ServerListResponse, ServerResponse } from "../types/responses";
 
 export async function getServerList(
   params?: ServerListParams
