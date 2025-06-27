@@ -1,37 +1,31 @@
 // src/types/serversParams.ts
 import { PageParams } from "./commonParams";
-import { ServerAttributes } from "./servers";
 
 /**
- * Parameters for requesting specific server attributes.
+ * Fields parameter for requesting specific server attributes.
  */
-export interface FieldsParams {
+export interface ServerFields {
   /**
-   * Request only specific attributes of the server be returned.
-   * Can be a single attribute, array of attributes, or comma-separated string.
+   * Request that only some attributes are returned.
    *
-   * @example "name"
-   * @example ["name", "ip", "port"]
    * @example "name,ip,port"
    */
-  server?: keyof ServerAttributes | (keyof ServerAttributes)[] | string;
+  server?: string;
 }
 
 /**
- * Filter parameters for narrowing down server results.
+ * Filter parameters for server list requests.
  */
-export interface FilterParams {
+export interface ServerListFilters {
   /**
    * Filter to servers that you have favorited.
    */
   favorites?: boolean;
 
   /**
-   * Filter by game identifier.
+   * Filter by game id.
    *
    * @example "ark"
-   * @example "rust"
-   * @example "dayz"
    */
   game?: string;
 
@@ -41,27 +35,61 @@ export interface FilterParams {
   groupLeader?: boolean;
 
   /**
-   * Return servers that belong to a specific group.
+   * Return servers that belong to a group.
    *
    * @example "example"
    */
   groups?: string;
 
   /**
-   * Maximum distance allowed in kilometers.
-   * Only useful when sorting by distance.
+   * Filter by server IDs (blacklist/whitelist).
+   */
+  ids?: {
+    /**
+     * Don't include servers with the given id(s). Comma separated.
+     *
+     * @example "123"
+     */
+    blacklist?: string;
+    /**
+     * Only include servers with the given id(s). Comma separated.
+     *
+     * @example "123"
+     */
+    whitelist?: string;
+  };
+
+  /**
+   * Max distance allowed in kilometers.
    *
    * @example 5000
    */
   maxDistance?: number;
 
   /**
-   * Filter servers by organization ID(s). Comma-separated.
+   * Filter servers by organization id(s). Comma separated.
    *
    * @example "123"
-   * @example "123,456,789"
    */
   organizations?: string;
+
+  /**
+   * Filter by player count range.
+   */
+  players?: {
+    /**
+     * Maximum number of players. Default: "Infinity", Range: 0 <= value.
+     *
+     * @example 42
+     */
+    max?: number;
+    /**
+     * Minimum number of players. Default: 0, Range: 0 <= value.
+     *
+     * @example 42
+     */
+    min?: number;
+  };
 
   /**
    * Filter servers that you have RCON access to.
@@ -69,11 +97,9 @@ export interface FilterParams {
   rcon?: boolean;
 
   /**
-   * Search term(s) to filter servers by name or description.
+   * Search term(s).
    *
-   * @example "PVE"
-   * @example "vanilla"
-   * @example "modded"
+   * @example "PvE"
    */
   search?: string;
 
@@ -81,97 +107,24 @@ export interface FilterParams {
    * Filter by server status.
    *
    * @example "online"
-   * @example "offline"
    */
   status?: string;
-
-  /**
-   * Filter by country codes.
-   *
-   * @example ["US", "CA"]
-   * @example ["DE", "FR", "GB"]
-   */
-  countries?: string[];
-
-  /**
-   * Filter by server features.
-   * Can be a simple boolean or complex OR conditions.
-   *
-   * @example { "469a1706-c8be-11e7-9d7a-e3ed64915530": true }
-   * @example { "11bc8572-ca45-11e7-bad6-2f023a014d57": { or: ["1a7c6614-ca45-11e7-84a2-8b4c8bd3712b", "1abb5fb8-ca45-11e7-858b-affed11cb7fd"] } }
-   */
-  features?: Record<string, boolean | { or: string[] }>;
 }
 
 /**
- * Parameters for filtering servers by ID lists.
+ * Relations parameter for requesting specific relationships.
  */
-export interface IdsParams {
-  /**
-   * Don't include servers with the given ID(s). Comma-separated.
-   *
-   * @example "123"
-   * @example "123,456,789"
-   */
-  blacklist?: string;
-
-  /**
-   * Only include servers with the given ID(s). Comma-separated.
-   *
-   * @example "123"
-   * @example "123,456,789"
-   */
-  whitelist?: string;
-}
-
-/**
- * Parameters for filtering servers by player count range.
- */
-export interface PlayersParams {
-  /**
-   * Minimum number of players.
-   * Default: 0
-   * Range: 0 <= value
-   *
-   * @example 42
-   */
-  min?: number;
-
-  /**
-   * Maximum number of players.
-   * Default: "infinity"
-   * Range: 0 <= value
-   *
-   * @example 100
-   */
-  max?: number;
-}
-
-/**
- * Parameters for requesting specific relationships in the response.
- */
-export interface RelationsParams {
+export interface ServerRelations {
   /**
    * Request that only some relationships are returned.
    *
    * @example "a,b"
-   * @example "s,b"
    */
   server?: string;
 }
 
 /**
  * Query parameters for listing servers from BattleMetrics.
- *
- * This interface organizes server listing parameters into logical groups:
- * - `fields`: Control which server attributes are returned
- * - `filter`: Apply various filters to narrow down results
- * - `ids`: Filter by server ID lists (whitelist/blacklist)
- * - `players`: Filter by player count range
- * - `relations`: Include related data in the response
- * - `page`: Control pagination of results
- * - `location`: Specify location for distance-based sorting
- * - `sort`: Control how results are ordered
  *
  * @example
  * ```typescript
@@ -180,39 +133,42 @@ export interface RelationsParams {
  *   filter: {
  *     game: "ark",
  *     status: "online",
- *     search: "PVE"
+ *     search: "PvE",
+ *     players: { min: 10, max: 100 },
+ *     ids: { blacklist: "123,456" }
  *   },
- *   players: { min: 10, max: 100 },
+ *   include: "serverGroup",
+ *   location: "47.6140999,-122.1966754",
  *   page: { size: 50, key: "100", rel: "next" },
+ *   relations: { server: "a,b" },
  *   sort: "players"
  * };
  * ```
  */
 export interface ServerListParams {
   /**
-   * Fields parameter for requesting specific attributes.
+   * Request that only some attributes are returned.
    */
-  fields?: FieldsParams;
+  fields?: ServerFields;
 
   /**
    * Filter options for the server list.
    */
-  filter?: FilterParams;
+  filter?: ServerListFilters;
 
   /**
-   * Filter by server ID lists (whitelist/blacklist).
+   * Relations to include. Comma separated. Valid values: serverGroup.
+   *
+   * @example "serverGroup"
    */
-  ids?: IdsParams;
+  include?: string;
 
   /**
-   * Filter by player count range (min/max).
+   * Your location. Format: longitude,latitude.
+   *
+   * @example "47.6140999,-122.1966754"
    */
-  players?: PlayersParams;
-
-  /**
-   * Relations parameter for requesting specific relationships.
-   */
-  relations?: RelationsParams;
+  location?: string;
 
   /**
    * Params for paginating the result set.
@@ -220,18 +176,12 @@ export interface ServerListParams {
   page?: PageParams;
 
   /**
-   * Your location. Only useful when sorting by distance.
-   * Format is: longitude,latitude
-   * Default: "location based on IP"
-   *
-   * @example "47.6140999,-122.1966574"
+   * Request that only some relationships are returned.
    */
-  location?: string;
+  relations?: ServerRelations;
 
   /**
-   * Sorting options. Default will sort by relevance when searching.
-   * Valid options: rank, name, players, distance
-   * Default: "rank"
+   * Sorting options. Default is "rank". Options: rank, name, players, distance.
    *
    * @example "rank"
    * @example "name"
